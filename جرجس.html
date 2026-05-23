@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مفاجأة</title>
+
+<style>
+body{
+    margin:0;
+    overflow:hidden;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    background:linear-gradient(135deg,#ff9a9e,#fad0c4);
+    font-family:Tahoma;
+    text-align:center;
+    color:white;
+}
+
+.box{
+    position:relative;
+    background:rgba(0,0,0,0.35);
+    padding:40px;
+    border-radius:25px;
+    backdrop-filter:blur(12px);
+    width:350px;
+    box-shadow:0 0 25px rgba(0,0,0,0.2);
+    z-index:10;
+    animation: fadeIn 1.5s ease;
+}
+
+@keyframes fadeIn{
+    from{opacity:0; transform:translateY(25px);}
+    to{opacity:1; transform:translateY(0);}
+}
+
+#name{
+    font-size:36px;
+    font-weight:bold;
+    margin-bottom:15px;
+    height:45px;
+    letter-spacing:2px;
+    position:relative;
+    display:inline-block;
+}
+
+.shine{
+    position:absolute;
+    top:0;
+    left:-100%;
+    width:100%;
+    height:100%;
+    background:linear-gradient(120deg, transparent, rgba(255,255,255,0.9), transparent);
+    animation:shineMove 1.5s forwards;
+}
+
+@keyframes shineMove{
+    from{left:-100%;}
+    to{left:100%;}
+}
+
+.cursor{
+    display:inline-block;
+    width:3px;
+    background:white;
+    margin-left:5px;
+    animation:blink 1s infinite;
+}
+
+@keyframes blink{
+    0%{opacity:1;}
+    50%{opacity:0;}
+    100%{opacity:1;}
+}
+
+button{
+    padding:12px 25px;
+    border:none;
+    border-radius:25px;
+    font-size:18px;
+    cursor:pointer;
+    margin-top:20px;
+    transition:0.3s;
+}
+
+button:hover{
+    transform:scale(1.05);
+}
+
+.heart{
+    position:absolute;
+    bottom:-20px;
+    color:#ff69b4;
+    animation:float 6s linear forwards;
+    opacity:0.8;
+}
+
+@keyframes float{
+    0%{transform:translateY(0) scale(1);}
+    100%{transform:translateY(-100vh) scale(1.5);opacity:0;}
+}
+
+/* صورة مفاجأة */
+#herImage{
+    display:none;
+    margin-top:15px;
+    width:200px;
+    height:200px;
+    border-radius:20px;
+    object-fit:cover;
+    box-shadow:0 0 20px rgba(0,0,0,0.3);
+    opacity:0;
+    transition:opacity 1s ease, transform 1s ease;
+}
+
+#herImage.show{
+    display:block;
+    opacity:1;
+    transform:scale(1);
+}
+
+#msg{
+    opacity:0;
+    transition:opacity 1s ease;
+}
+
+#msg.show{
+    opacity:1;
+}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+    <div id="name">
+        <span id="text"></span><span class="cursor"></span>
+    </div>
+    <p> دوس يا عسل متخافش...</p>
+    <button id="openBtn" onclick="showMsg()">افتح</button>
+    <p id="msg"></p>
+    <img id="herImage" src="https://i.top4top.io/p_3794ik0ex0.png" alt="صورة">
+</div>
+
+<audio id="mySong">
+    <source src="https://h.top4top.io/m_3794upwuc1.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+let text = "Gargosy"; // غير الاسم هنا
+let i = 0;
+
+// كتابة الاسم حرف حرف بعد ظهور الصفحة
+setTimeout(typing, 1200);
+
+function typing(){
+    if(i < text.length){
+        document.getElementById("text").innerHTML += text.charAt(i);
+        i++;
+        setTimeout(typing,160);
+    }else{
+        startShineLoop();
+    }
+}
+
+// تكرار اللمعة
+function startShineLoop(){
+    shineEffect();
+    setInterval(shineEffect, 2500);
+}
+
+function shineEffect(){
+    const shine = document.createElement("div");
+    shine.classList.add("shine");
+    document.getElementById("name").appendChild(shine);
+    setTimeout(()=>shine.remove(),1500);
+}
+
+// عند الضغط على الزر
+function showMsg(){
+    // إخفاء الزر فورًا
+    document.getElementById("openBtn").style.display = "none";
+
+    // الرسالة مع Fade
+    const msg = document.getElementById("msg");
+    msg.innerHTML = "🤭😂مفاجأه يا فوووزي";
+    msg.classList.add("show");
+
+    // ظهور الصورة مع Fade
+    const img = document.getElementById("herImage");
+    img.classList.add("show");
+
+    // تشغيل الأغنية
+    document.getElementById("mySong").play();
+}
+
+// القلوب
+function createHeart(){
+    const heart = document.createElement("div");
+    heart.classList.add("heart");
+    heart.innerHTML = "❤";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.fontSize = (Math.random() * 10 + 12) + "px";
+    document.body.appendChild(heart);
+    setTimeout(()=>heart.remove(),6000);
+}
+setInterval(createHeart,400);
+</script>
+
+</body>
+</html>
